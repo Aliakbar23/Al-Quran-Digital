@@ -1,0 +1,14 @@
+{
+  "name": "Al-Quran Digital",
+  "short_name": "Al-Quran",
+  "description": "Baca Al-Quran, jadwal sholat, dzikir, kiblat & lebih banyak lagi",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF6F0",
+  "theme_color": "#1B4332",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

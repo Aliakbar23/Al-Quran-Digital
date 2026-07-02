@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #FAF6F0;
+    color: #0D2818;
+  }
+
+  /* Scrollbar tipis */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #40916C; border-radius: 2px; }
+}
+
+@layer utilities {
+  .text-arabic {
+    font-family: var(--font-amiri), serif;
+    direction: rtl;
+    line-height: 2.2;
+    letter-spacing: 0.02em;
+  }
+
+  /* Ornamen garis gold */
+  .divider-gold {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #C9A227, transparent);
+  }
+
+  /* Card islami dengan border gold tipis */
+  .card-islamic {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid rgba(201, 162, 39, 0.2);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+
+  .gradient-green {
+    background: linear-gradient(135deg, #1B4332 0%, #2D6A4F 100%);
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  @keyframes glow {
+    0%, 100% { box-shadow: 0 4px 20px rgba(0,0,0,0.06), 0 0 10px rgba(201, 162, 39, 0.2); }
+    50% { box-shadow: 0 4px 20px rgba(0,0,0,0.06), 0 0 20px rgba(201, 162, 39, 0.6); }
+  }
+
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .animate-glow {
+    animation: glow 3s ease-in-out infinite;
+  }
+}
