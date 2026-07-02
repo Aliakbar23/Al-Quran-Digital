@@ -64,33 +64,5 @@ Aplikasi ini mendukung fungsionalitas PWA penuh pada perangkat Android, iOS, mau
 
 ---
 
-## 🏃 Cara Menjalankan Project Secara Lokal
-
-Ikuti langkah berikut untuk memasang project di komputer lokal Anda:
-
-1. **Clone Repositori**:
-   ```bash
-   git clone https://github.com/Aliakbar23/Al-Quran-Digital.git
-   cd Al-Quran-Digital/quran-app
-   ```
-
-2. **Instalasi Dependensi**:
-   ```bash
-   npm install
-   ```
-
-3. **Menjalankan Server Dev**:
-   ```bash
-   npm run dev
-   ```
-   Buka peramban dan navigasikan ke `http://localhost:3000`.
-
-4. **Kompilasi Produksi**:
-   ```bash
-   npm run build
-   ```
-
----
-
-## 📄 Lisensi
-Project ini dibuat untuk kepentingan syiar, pembelajaran, dan penggunaan umum secara gratis. Hak cipta data API bersumber dari layanan terpercaya penyedia konten keagamaan.
+## 🔒 Kepemilikan & Hak Cipta
+Aplikasi ini dikembangkan secara pribadi oleh **Aliakbar**. Seluruh kode sumber bersifat tertutup (*proprietary*). Dilarang keras menyalin, mempublikasikan ulang, mendistribusikan, atau memodifikasi kode ini tanpa izin tertulis dari pemilik hak cipta.
