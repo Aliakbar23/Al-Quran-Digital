@@ -86,16 +86,21 @@ const playChime = () => {
   }
 };
 
-function DzikirCard({ item }: { item: DzikirItem }) {
-  const [count, setCount] = useState(0);
+function DzikirCard({
+  item,
+  count,
+  onUpdate,
+}: {
+  item: DzikirItem;
+  count: number;
+  onUpdate: (val: number) => void;
+}) {
   const done = count >= item.count;
 
   const handleIncrement = () => {
-    setCount((c) => {
-      const next = Math.min(c + 1, item.count);
-      playChime();
-      return next;
-    });
+    const next = Math.min(count + 1, item.count);
+    playChime();
+    onUpdate(next);
   };
 
   return (
@@ -116,18 +121,32 @@ function DzikirCard({ item }: { item: DzikirItem }) {
         <span className={`text-xs font-bold uppercase tracking-wider ${done ? "text-gold" : "text-emerald-600"}`}>
           {done ? "✓ Selesai" : `${count} / ${item.count}x`}
         </span>
-        {!done ? (
-          <button
-            onClick={handleIncrement}
-            className="rounded-xl gradient-green px-4 py-2 text-xs font-bold text-white shadow-soft active:scale-95 transition-all"
-          >
-            +1 Hitung
-          </button>
-        ) : (
-          <button onClick={() => setCount(0)} className="rounded-xl bg-gray-100 px-4 py-2 text-xs text-gray-500 hover:bg-gray-200 transition-colors">
-            Ulangi
-          </button>
-        )}
+        <div className="flex gap-2">
+          {count > 0 && (
+            <button
+              onClick={() => onUpdate(0)}
+              className="rounded-xl border border-red-200 bg-red-50 hover:bg-red-100 px-3 py-2 text-xs font-bold text-red-600 active:scale-95 transition-all"
+              title="Reset Lafadz Ini"
+            >
+              ⟳ Reset
+            </button>
+          )}
+          {!done ? (
+            <button
+              onClick={handleIncrement}
+              className="rounded-xl gradient-green px-4 py-2 text-xs font-bold text-white shadow-soft active:scale-95 transition-all"
+            >
+              +1 Hitung
+            </button>
+          ) : (
+            <button
+              onClick={() => onUpdate(0)}
+              className="rounded-xl bg-gray-100 px-4 py-2 text-xs text-gray-500 hover:bg-gray-200 transition-colors"
+            >
+              Ulangi
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -161,6 +180,33 @@ function DoaCard({ item }: { item: DoaItem }) {
 export default function DzikirPage() {
   const [tab, setTab] = useState<Tab>("pagi");
   const [doaSearch, setDoaSearch] = useState("");
+  const [counts, setCounts] = useState<Record<number, number>>({});
+
+  useEffect(() => {
+    const saved = localStorage.getItem("dzikir_counts");
+    if (saved) {
+      try {
+        setCounts(JSON.parse(saved));
+      } catch (e) {
+        console.error("Gagal memuat dzikir_counts:", e);
+      }
+    }
+  }, []);
+
+  const handleUpdateCount = (id: number, val: number) => {
+    setCounts((prev) => {
+      const next = { ...prev, [id]: val };
+      localStorage.setItem("dzikir_counts", JSON.stringify(next));
+      return next;
+    });
+  };
+
+  const handleResetAll = () => {
+    if (window.confirm("Apakah Anda yakin ingin me-reset semua hitungan dzikir?")) {
+      setCounts({});
+      localStorage.removeItem("dzikir_counts");
+    }
+  };
 
   const TABS: { key: Tab; label: string; icon: string }[] = [
     { key: "pagi", label: "Dzikir Pagi", icon: "🌅" },
@@ -182,8 +228,8 @@ export default function DzikirPage() {
       <PageHeader title="Dzikir & Doa" subtitle="Koleksi dzikir pagi, sore, doa sehari-hari, dan sholawat nabi resmi" />
 
       {/* Tab Selector */}
-      <div className="sticky top-0 z-10 bg-cream border-b border-emerald-100 px-4 py-2">
-        <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+      <div className="sticky top-0 z-10 bg-cream border-b border-emerald-100 px-4 py-2 flex items-center justify-between gap-4">
+        <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none flex-grow">
           {TABS.map((t) => (
             <button
               key={t.key}
@@ -195,6 +241,14 @@ export default function DzikirPage() {
             </button>
           ))}
         </div>
+        {tab !== "doa" && (
+          <button
+            onClick={handleResetAll}
+            className="flex-shrink-0 rounded-xl border border-red-200 bg-red-50 hover:bg-red-100 px-3 py-2 text-xs font-bold text-red-600 active:scale-95 transition-all flex items-center gap-1"
+          >
+            🗑️ Reset Semua
+          </button>
+        )}
       </div>
 
       {/* Search Input khusus Tab Doa */}
@@ -212,16 +266,36 @@ export default function DzikirPage() {
 
       {/* Konten Halaman */}
       <div className="px-4 pt-4 grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
-        {tab === "pagi" && DZIKIR_PAGI.map((d) => <DzikirCard key={d.id} item={d} />)}
-        {tab === "petang" && DZIKIR_PETANG.map((d) => <DzikirCard key={d.id} item={d} />)}
-        {tab === "sholawat" && SHOLAWAT_LIST.map((s) => <DzikirCard key={s.id} item={s} />)}
+        {tab === "pagi" &&
+          DZIKIR_PAGI.map((d) => (
+            <DzikirCard
+              key={d.id}
+              item={d}
+              count={counts[d.id] || 0}
+              onUpdate={(val) => handleUpdateCount(d.id, val)}
+            />
+          ))}
+        {tab === "petang" &&
+          DZIKIR_PETANG.map((d) => (
+            <DzikirCard
+              key={d.id}
+              item={d}
+              count={counts[d.id] || 0}
+              onUpdate={(val) => handleUpdateCount(d.id, val)}
+            />
+          ))}
+        {tab === "sholawat" &&
+          SHOLAWAT_LIST.map((s) => (
+            <DzikirCard
+              key={s.id}
+              item={s}
+              count={counts[s.id] || 0}
+              onUpdate={(val) => handleUpdateCount(s.id, val)}
+            />
+          ))}
 
-        {tab === "doa" && filteredDoas.map((d) => (
-          <DoaCard
-            key={d.id}
-            item={d}
-          />
-        ))}
+        {tab === "doa" &&
+          filteredDoas.map((d) => <DoaCard key={d.id} item={d} />)}
 
         {tab === "doa" && filteredDoas.length === 0 && (
           <p className="col-span-full text-center text-xs text-gray-400 py-10">Doa tidak ditemukan</p>

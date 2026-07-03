@@ -11,66 +11,90 @@ const PRESETS = [
   { label: "Sholawat", arabic: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّد", target: 100 },
 ];
 
+interface TasbihItemState {
+  count: number;
+  sessions: number;
+}
+
 export default function TasbihPage() {
-  const [count, setCount] = useState(0);
   const [selectedIdx, setSelectedIdx] = useState(0);
   const [vibrate, setVibrate] = useState(false);
-  const [sessions, setSessions] = useState(0);
+  const [data, setData] = useState<Record<number, TasbihItemState>>({});
 
   const preset = PRESETS[selectedIdx];
+  const currentData = data[selectedIdx] || { count: 0, sessions: 0 };
+  const count = currentData.count;
+  const sessions = currentData.sessions;
+
   const progress = Math.min((count / preset.target) * 100, 100);
   const isDone = count >= preset.target;
 
   // Load state from localStorage on mount
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const savedCount = localStorage.getItem("tasbih_count");
       const savedIdx = localStorage.getItem("tasbih_selected_idx");
-      const savedSessions = localStorage.getItem("tasbih_sessions");
-      if (savedCount !== null) setCount(Number(savedCount));
+      const savedData = localStorage.getItem("tasbih_data");
+      
       if (savedIdx !== null) setSelectedIdx(Number(savedIdx));
-      if (savedSessions !== null) setSessions(Number(savedSessions));
+      if (savedData !== null) {
+        try {
+          setData(JSON.parse(savedData));
+        } catch (e) {
+          console.error("Gagal memuat tasbih_data:", e);
+        }
+      }
     }
   }, []);
 
   const handleTap = () => {
     if (isDone) return;
-    setCount((c) => {
-      const next = c + 1;
-      localStorage.setItem("tasbih_count", String(next));
-      if (next >= preset.target) {
-        setSessions((s) => {
-          const nextS = s + 1;
-          localStorage.setItem("tasbih_sessions", String(nextS));
-          return nextS;
-        });
-        if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-      } else {
-        if (navigator.vibrate) navigator.vibrate(30);
-      }
-      return next;
+    
+    const nextCount = count + 1;
+    const sessionCompleted = nextCount >= preset.target;
+    const nextSessions = sessionCompleted ? sessions + 1 : sessions;
+
+    setData((prev) => {
+      const updated = {
+        ...prev,
+        [selectedIdx]: { count: nextCount, sessions: nextSessions },
+      };
+      localStorage.setItem("tasbih_data", JSON.stringify(updated));
+      return updated;
     });
+
+    if (sessionCompleted) {
+      if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+    } else {
+      if (navigator.vibrate) navigator.vibrate(30);
+    }
+    
     setVibrate(true);
     setTimeout(() => setVibrate(false), 100);
   };
 
   const reset = () => {
-    setCount(0);
-    localStorage.setItem("tasbih_count", "0");
+    if (window.confirm(`Apakah Anda yakin ingin me-reset hitungan untuk ${preset.label}?`)) {
+      setData((prev) => {
+        const updated = {
+          ...prev,
+          [selectedIdx]: { count: 0, sessions: 0 },
+        };
+        localStorage.setItem("tasbih_data", JSON.stringify(updated));
+        return updated;
+      });
+    }
   };
 
   const resetAll = () => {
-    setCount(0);
-    setSessions(0);
-    localStorage.setItem("tasbih_count", "0");
-    localStorage.setItem("tasbih_sessions", "0");
+    if (window.confirm("Apakah Anda yakin ingin me-reset semua hitungan tasbih untuk seluruh dzikir?")) {
+      setData({});
+      localStorage.removeItem("tasbih_data");
+    }
   };
 
   const handleSelectPreset = (idx: number) => {
     setSelectedIdx(idx);
     localStorage.setItem("tasbih_selected_idx", String(idx));
-    setCount(0);
-    localStorage.setItem("tasbih_count", "0");
   };
 
   return (

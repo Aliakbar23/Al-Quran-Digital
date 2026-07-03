@@ -240,6 +240,44 @@ export default function BacaSurahPage() {
             </select>
           </div>
         </div>
+
+        {/* Legend/Guide Tajwid */}
+        {showTajwid && (
+          <div className="mt-4 animate-fade-up bg-emerald-950/40 rounded-xl p-3 border border-emerald-800/50 text-xs text-white">
+            <p className="font-bold text-emerald-300 mb-2.5">💡 Panduan Warna Teks Hukum Tajwid:</p>
+            <div className="flex flex-wrap gap-x-5 gap-y-2">
+              <span className="flex items-center gap-1">
+                <span className="font-bold text-[#e11d48] text-base leading-none">نّ</span>
+                <span>Ghunnah</span>
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="font-bold text-[#0284c7] text-base leading-none">دْ</span>
+                <span>Qalqalah</span>
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="font-bold text-[#a855f7] text-base leading-none">نْ</span>
+                <span>Ikhfa</span>
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="font-bold text-[#10b981] text-base leading-none">نْ</span>
+                <span>Idgham</span>
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="font-bold text-[#f59e0b] text-base leading-none">نْ</span>
+                <span>Iqlab</span>
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="font-bold text-[#64748b] text-base leading-none">نْ</span>
+                <span>Izhar</span>
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="font-bold text-[#06b6d4] text-base leading-none">آ</span>
+                <span>Mad</span>
+              </span>
+            </div>
+          </div>
+        )}
+
         <div className="mt-4 divider-gold" />
       </div>
 

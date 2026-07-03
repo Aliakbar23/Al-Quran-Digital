@@ -58,3 +58,41 @@
     animation: glow 3s ease-in-out infinite;
   }
 }
+
+/* Tajwid Highlighter Styles (Text color only, no background highlight) */
+.tajwid-ghunnah {
+  color: #e11d48 !important; /* Rose / Pink */
+  font-weight: bold !important;
+}
+
+.tajwid-qalqalah {
+  color: #0284c7 !important; /* Sky Blue */
+  font-weight: bold !important;
+}
+
+.tajwid-ikhfa {
+  color: #a855f7 !important; /* Purple */
+  font-weight: bold !important;
+}
+
+.tajwid-idgham {
+  color: #10b981 !important; /* Emerald Green */
+  font-weight: bold !important;
+}
+
+.tajwid-iqlab {
+  color: #f59e0b !important; /* Amber / Gold */
+  font-weight: bold !important;
+}
+
+.tajwid-izhar {
+  color: #64748b !important; /* Slate / Grey */
+  font-weight: bold !important;
+}
+
+.tajwid-mad {
+  color: #06b6d4 !important; /* Cyan / Teal */
+  font-weight: bold !important;
+}
+
+
