@@ -19,7 +19,7 @@
     font-family: var(--font-amiri), serif;
     direction: rtl;
     line-height: 2.2;
-    letter-spacing: 0.02em;
+    letter-spacing: normal !important;
   }
 
   /* Ornamen garis gold */
