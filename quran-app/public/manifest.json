@@ -29,6 +29,13 @@
       "type": "image/png",
       "form_factor": "narrow",
       "label": "Halaman Beranda Aplikasi Al-Quran"
+    },
+    {
+      "src": "/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Tampilan Desktop Aplikasi Al-Quran"
     }
   ],
   "related_applications": []
