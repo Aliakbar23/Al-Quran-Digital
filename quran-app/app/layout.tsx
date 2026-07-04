@@ -25,8 +25,16 @@ export const metadata: Metadata = {
   referrer: "no-referrer",
   appleWebApp: {
     capable: true,
-    title: "Al-Quran",
-    statusBarStyle: "black-translucent",
+    title: "Al-Quran Digital",
+    statusBarStyle: "default",
+  },
+  other: {
+    'mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-capable': 'yes',
+    'apple-mobile-web-app-status-bar-style': 'default',
+    'apple-mobile-web-app-title': 'Al-Quran Digital',
+    'msapplication-TileColor': '#1B4332',
+    'msapplication-tap-highlight': 'no',
   },
 };
 
@@ -37,6 +45,9 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="id">
+      <head>
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+      </head>
       <body className={`${amiri.variable} ${poppins.variable} font-poppins min-h-screen bg-[#FAF6F0]`}>
         <div className="min-h-screen flex flex-col md:flex-row">
           {/* Pendaftaran PWA Service Worker */}
@@ -57,6 +68,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <BottomNav />
           </div>
         </div>
+        <script dangerouslySetInnerHTML={{__html: `
+          if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+              navigator.serviceWorker.register('/sw.js')
+                .then(r => console.log('SW registered'))
+                .catch(e => console.log('SW error', e));
+            });
+          }
+        `}} />
       </body>
     </html>
   );
