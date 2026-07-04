@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline | Al-Quran Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #FAF6F0;
+      color: #0D2818;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+    .container {
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      padding: 40px 24px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(13, 40, 24, 0.05);
+      border: 1px solid rgba(27, 67, 50, 0.1);
+    }
+    .icon-wrapper {
+      margin-bottom: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 80px;
+      height: 80px;
+      background-color: rgba(27, 67, 50, 0.05);
+      border-radius: 50%;
+      color: #1B4332;
+    }
+    .icon-wrapper svg {
+      width: 40px;
+      height: 40px;
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1B4332;
+      margin: 0 0 12px 0;
+    }
+    p {
+      font-size: 14px;
+      color: #2D6A4F;
+      line-height: 1.6;
+      margin: 0 0 28px 0;
+    }
+    .btn-retry {
+      display: inline-block;
+      width: 100%;
+      padding: 14px 20px;
+      background-color: #1B4332;
+      color: #FAF6F0;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      border-radius: 8px;
+      border: 1px solid #1B4332;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(27, 67, 50, 0.2);
+    }
+    .btn-retry:hover {
+      background-color: #2D6A4F;
+      border-color: #2D6A4F;
+    }
+    .btn-retry:active {
+      transform: scale(0.98);
+    }
+    .divider {
+      width: 60px;
+      height: 3px;
+      background-color: #C9A227;
+      margin: 0 auto 20px auto;
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon-wrapper">
+      <!-- Wifi Off Icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8.284 16.284A3 3 0 0 0 12 17.25a3 3 0 0 0 3.716-1.026M19.5 8.25a9 9 0 0 0-15 0M2.25 2.25l19.5 19.5M10.25 13.25a1 1 0 0 0 1.5 0" />
+      </svg>
+    </div>
+    <h1>Koneksi Terputus</h1>
+    <div class="divider"></div>
+    <p>Halaman ini memerlukan koneksi internet. Silakan periksa jaringan Wi-Fi atau data seluler Anda dan coba lagi.</p>
+    <button class="btn-retry" onclick="window.location.reload()">Coba Lagi</button>
+  </div>
+</body>
+</html>
