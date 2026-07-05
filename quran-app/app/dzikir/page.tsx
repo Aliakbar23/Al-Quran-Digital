@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import PageHeader from "@/components/PageHeader";
 import { DZIKIR_PAGI, DZIKIR_PETANG, type DzikirItem } from "@/data/dzikir";
 import { DOA_HARIAN } from "@/data/doa-harian";
+import CustomConfirmModal from "@/components/CustomConfirmModal";
 
 type Tab = "pagi" | "petang" | "doa" | "sholawat";
 
@@ -181,6 +182,7 @@ export default function DzikirPage() {
   const [tab, setTab] = useState<Tab>("pagi");
   const [doaSearch, setDoaSearch] = useState("");
   const [counts, setCounts] = useState<Record<number, number>>({});
+  const [isResetOpen, setIsResetOpen] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("dzikir_counts");
@@ -202,10 +204,13 @@ export default function DzikirPage() {
   };
 
   const handleResetAll = () => {
-    if (window.confirm("Apakah Anda yakin ingin me-reset semua hitungan dzikir?")) {
-      setCounts({});
-      localStorage.removeItem("dzikir_counts");
-    }
+    setIsResetOpen(true);
+  };
+
+  const handleConfirmReset = () => {
+    setCounts({});
+    localStorage.removeItem("dzikir_counts");
+    setIsResetOpen(false);
   };
 
   const TABS: { key: Tab; label: string; icon: string }[] = [
@@ -301,6 +306,17 @@ export default function DzikirPage() {
           <p className="col-span-full text-center text-xs text-gray-400 py-10">Doa tidak ditemukan</p>
         )}
       </div>
+
+      {/* Custom Confirmation Modal */}
+      <CustomConfirmModal
+        isOpen={isResetOpen}
+        title="Reset Hitungan Dzikir"
+        message="Apakah Anda yakin ingin me-reset semua hitungan dzikir pagi, sore, dan sholawat Anda? Tindakan ini tidak dapat dibatalkan."
+        onConfirm={handleConfirmReset}
+        onCancel={() => setIsResetOpen(false)}
+        isDanger={true}
+        confirmText="Ya, Reset Semua"
+      />
     </main>
   );
 }

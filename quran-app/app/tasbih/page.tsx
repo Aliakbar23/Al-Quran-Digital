@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import PageHeader from "@/components/PageHeader";
+import CustomConfirmModal from "@/components/CustomConfirmModal";
 
 const PRESETS = [
   { label: "SubhanAllah", arabic: "سُبْحَانَ اللَّهِ", target: 33 },
@@ -20,6 +21,8 @@ export default function TasbihPage() {
   const [selectedIdx, setSelectedIdx] = useState(0);
   const [vibrate, setVibrate] = useState(false);
   const [data, setData] = useState<Record<number, TasbihItemState>>({});
+  const [isResetOpen, setIsResetOpen] = useState(false);
+  const [isResetAllOpen, setIsResetAllOpen] = useState(false);
 
   const preset = PRESETS[selectedIdx];
   const currentData = data[selectedIdx] || { count: 0, sessions: 0 };
@@ -73,23 +76,29 @@ export default function TasbihPage() {
   };
 
   const reset = () => {
-    if (window.confirm(`Apakah Anda yakin ingin me-reset hitungan untuk ${preset.label}?`)) {
-      setData((prev) => {
-        const updated = {
-          ...prev,
-          [selectedIdx]: { count: 0, sessions: 0 },
-        };
-        localStorage.setItem("tasbih_data", JSON.stringify(updated));
-        return updated;
-      });
-    }
+    setIsResetOpen(true);
+  };
+
+  const handleConfirmReset = () => {
+    setData((prev) => {
+      const updated = {
+        ...prev,
+        [selectedIdx]: { count: 0, sessions: 0 },
+      };
+      localStorage.setItem("tasbih_data", JSON.stringify(updated));
+      return updated;
+    });
+    setIsResetOpen(false);
   };
 
   const resetAll = () => {
-    if (window.confirm("Apakah Anda yakin ingin me-reset semua hitungan tasbih untuk seluruh dzikir?")) {
-      setData({});
-      localStorage.removeItem("tasbih_data");
-    }
+    setIsResetAllOpen(true);
+  };
+
+  const handleConfirmResetAll = () => {
+    setData({});
+    localStorage.removeItem("tasbih_data");
+    setIsResetAllOpen(false);
   };
 
   const handleSelectPreset = (idx: number) => {
@@ -193,6 +202,25 @@ export default function TasbihPage() {
           </div>
         )}
       </div>
+
+      {/* Custom Confirmation Modals */}
+      <CustomConfirmModal
+        isOpen={isResetOpen}
+        title="Reset Tasbih"
+        message={`Apakah Anda yakin ingin me-reset hitungan untuk ${preset.label}? Semua sesi selesai untuk dzikir ini akan dikembalikan ke nol.`}
+        onConfirm={handleConfirmReset}
+        onCancel={() => setIsResetOpen(false)}
+      />
+
+      <CustomConfirmModal
+        isOpen={isResetAllOpen}
+        title="Reset Semua Tasbih"
+        message="Apakah Anda yakin ingin me-reset semua hitungan tasbih untuk seluruh dzikir? Tindakan ini tidak dapat dibatalkan."
+        onConfirm={handleConfirmResetAll}
+        onCancel={() => setIsResetAllOpen(false)}
+        isDanger={true}
+        confirmText="Ya, Reset Semua"
+      />
     </main>
   );
 }
