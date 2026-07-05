@@ -5,6 +5,7 @@ import BottomNav from "@/components/BottomNav";
 import Sidebar from "@/components/Sidebar";
 import RegisterSW from "@/components/RegisterSW";
 import AdhanAlarm from "@/components/AdhanAlarm";
+import GlobalLoader from "@/components/GlobalLoader";
 
 const amiri = Amiri({
   subsets: ["arabic", "latin"],
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body className={`${amiri.variable} ${poppins.variable} font-poppins min-h-screen bg-[#FAF6F0]`}>
+        <GlobalLoader />
         <div className="min-h-screen flex flex-col md:flex-row">
           {/* Pendaftaran PWA Service Worker */}
           <RegisterSW />
