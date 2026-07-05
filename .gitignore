@@ -19,3 +19,23 @@ yarn-error.log*
 # OS files
 .DS_Store
 Thumbs.db
+
+# Android & Bubblewrap outputs/caches
+*.apk
+*.aab
+*.idsig
+*.keystore
+/.gradle/
+/build/
+/app/
+/gradle/
+gradlew
+gradlew.bat
+settings.gradle
+build.gradle
+gradle.properties
+twa-manifest.json
+manifest-checksum.txt
+store_icon.png
+jdk-test.zip
+
